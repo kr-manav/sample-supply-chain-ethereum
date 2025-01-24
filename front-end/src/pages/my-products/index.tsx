@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Heading, HStack, VStack } from "native-base";
 import { useEffect, useState } from "react";
 import { Footer, Header, ProductCard } from "../../components";
@@ -7,9 +8,9 @@ import { useSelector } from "react-redux";
 import { Product } from "../../repository/interfaces";
 import Fab from "../../components/fab";
 import { useApiCall } from "../../hooks/hooks";
-import { ThreeCircles } from "react-loader-spinner";
 import { SupplyChainService } from "../../repository/supplyChain";
 import { toastSuccess } from "../../utils/toastMessages";
+import { Loading } from "../../components/loading";
 
 export function MyProductsPage() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -21,7 +22,8 @@ export function MyProductsPage() {
     (state: RootState) => state.generalReducer
   );
 
-  const { getMyProducts, myProductListLoading } = useApiCall();
+  const { getMyProducts, myProductListLoading, setMyProductListLoading } =
+    useApiCall();
   const { myProducts, searchedProducts } = useSelector(
     (state: RootState) => state.generalReducer
   );
@@ -53,8 +55,9 @@ export function MyProductsPage() {
   };
 
   useEffect(() => {
+    console.log("Product list loading");
     !myProductListLoading && setProductList(myProducts);
-  }, [myProductListLoading]);
+  }, [myProductListLoading, showModal]);
 
   useEffect(() => {
     setProductList(searchedProducts);
@@ -65,14 +68,7 @@ export function MyProductsPage() {
         <Header />
         <VStack w="100%" minH="85vh" alignItems="center" p="2">
           {myProductListLoading ? (
-            <HStack justifyContent={"center"} mt={20}>
-              <ThreeCircles
-                color="blue"
-                height={110}
-                width={110}
-                ariaLabel="three-circles-rotating"
-              />
-            </HStack>
+            <Loading />
           ) : !myProductListLoading &&
             productList &&
             productList.length === 0 ? (
@@ -91,6 +87,7 @@ export function MyProductsPage() {
                   <ProductCard
                     key={item.barcodeId}
                     item={item}
+                    loading={myProductListLoading}
                     setShowModal={setShowModal}
                     setProductSelected={setProductSelected}
                   />
@@ -102,6 +99,7 @@ export function MyProductsPage() {
         <Footer />
       </VStack>
       <SaleModal
+        setLoading={setMyProductListLoading}
         productSelected={productSelected}
         showModal={showModal}
         setShowModal={setShowModal}

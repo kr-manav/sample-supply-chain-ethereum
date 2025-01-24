@@ -5,7 +5,7 @@ import bwipjs from "bwip-js";
 export const Barcode = ({ data }: { data: string }) => {
   useEffect(() => {
     try {
-      let canvas = bwipjs.toCanvas(data, {
+      bwipjs.toCanvas(data, {
         bcid: "code128",
         text: data,
         scale: 0,

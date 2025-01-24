@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Avatar } from "native-base";
 
 import { VerticalTimelineElement } from "react-vertical-timeline-component";

@@ -18,6 +18,9 @@ export function generalReducer(
   state = initialState,
   action: AnyAction
 ): StateType {
+  console.log("🚀 ~ file: general-reducer.ts:91 ~ state:", state);
+
+  console.log("🚀 ~ file: general-reducer.ts:21 ~ action:", action);
   switch (action.type) {
     case ACTION.SET_LOGIN_STATUS: {
       const { status } = action.payload;

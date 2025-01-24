@@ -1,12 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Heading, Stack, VStack } from "native-base";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Layout } from "../../components";
 import { useApiCall } from "../../hooks/hooks";
 import { RootState } from "../../store/reducers";
-import { ThreeCircles } from "react-loader-spinner";
 import { AddUserForm, SearchBar, UsersData } from "./components";
 import { SupplyChainService } from "../../repository/supplyChain";
+import { Loading } from "../../components/loading";
 
 export function AddUserPage() {
   const [searchText, setSearchText] = useState("");
@@ -57,12 +58,7 @@ export function AddUserPage() {
               Existing Users
             </Heading>
             {userListLoading ? (
-              <ThreeCircles
-                color="blue"
-                height={60}
-                width={60}
-                ariaLabel="three-circles-rotating"
-              />
+              <Loading />
             ) : (
               <>
                 {addedUserList.length !== 0 && (

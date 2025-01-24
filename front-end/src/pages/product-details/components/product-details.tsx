@@ -1,6 +1,5 @@
 import { Box, HStack, Image, Text, VStack } from "native-base";
 import { Barcode } from "../../../components/barcode";
-import validator from "validator";
 import { Product } from "../../../repository/interfaces";
 import { getNumberOfDays } from "../../../utils/daysLeft";
 import { epochToDate } from "../../../utils/epochToDate";

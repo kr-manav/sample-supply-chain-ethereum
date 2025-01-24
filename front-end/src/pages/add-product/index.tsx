@@ -19,10 +19,11 @@ import { Product } from "../../repository/interfaces";
 import { toastError } from "../../utils/toastMessages";
 import { getCustomDateEpoch } from "../../utils/util";
 import { FormDate, FormInput, List } from "./components";
+import { Loading } from "../../components/loading";
 export type InputType = { id: string; value: string };
 
 export function AddProductPage() {
-  const { addMyProduct } = useApiCall();
+  const { addMyProduct, getProducts } = useApiCall();
   const [productDetails, setProductDetails] = useState<Product>({} as Product);
   const [manDate, setManDate] = useState("");
   const [expDate, setExpDate] = useState("");
@@ -135,6 +136,7 @@ export function AddProductPage() {
           setExpDate("");
           setIngredientList([]);
           setSideEffectList([]);
+          getProducts();
           navigate("/all-products");
         }
       }
@@ -377,9 +379,7 @@ export function AddProductPage() {
             </FormControl>
 
             {loading ? (
-              <Button mt="4" isDisabled={true} bg="violet.700">
-                loading...
-              </Button>
+              <Loading />
             ) : (
               <Button
                 onPress={() => {

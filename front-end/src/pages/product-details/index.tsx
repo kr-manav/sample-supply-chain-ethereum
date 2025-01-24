@@ -1,12 +1,13 @@
-import { HStack, VStack } from "native-base";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { VStack } from "native-base";
 import { useEffect, useState } from "react";
-import { ThreeCircles } from "react-loader-spinner";
 import { Layout, ScreenHeader } from "../../components";
 import { ProductDetail } from "./components/product-details";
 import { VerticleTimeline } from "./components/verticla-timeline";
 import { useLocation, useParams } from "react-router-dom";
 import { useApiCall } from "../../hooks/hooks";
-import { UserDetails, UserHistory } from "../../repository/interfaces";
+import { UserHistory } from "../../repository/interfaces";
+import { Loading } from "../../components/loading";
 
 export function ProductDetails() {
   const { productid } = useParams();
@@ -148,14 +149,7 @@ export function ProductDetails() {
             )}
           </VStack>
           {productDetailsLoading && (
-            <HStack justifyContent={"center"}>
-              <ThreeCircles
-                color="blue"
-                height={110}
-                width={110}
-                ariaLabel="three-circles-rotating"
-              />
-            </HStack>
+            <Loading />
           )}
         </VStack>
       </VStack>

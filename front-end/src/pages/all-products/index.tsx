@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Heading, HStack, VStack } from "native-base";
 import { Footer, Header, ProductCard } from "../../components";
 import { useApiCall } from "../../hooks/hooks";
@@ -5,25 +6,20 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/reducers";
 import { Product } from "../../repository/interfaces";
 import Fab from "../../components/fab";
-import { ThreeCircles } from "react-loader-spinner";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SupplyChainService } from "../../repository/supplyChain";
 import { toastSuccess } from "../../utils/toastMessages";
+import { Loading } from "../../components/loading";
 
 export const AllProducts = () => {
-  const { productListLoading, getProducts } = useApiCall();
-  const { products } = useSelector((state: RootState) => state.generalReducer);
-  const [productList, setProductList] = useState<Product[]>();
-  const { isUserLoggedIn, searchedProducts } = useSelector(
+  const { productListLoading, getProducts, myProductListLoading } =
+    useApiCall();
+  const { products, isUserLoggedIn, searchedProducts } = useSelector(
     (state: RootState) => state.generalReducer
   );
+  const [productList, setProductList] = useState<Product[]>();
 
-  useEffect(() => {
-    getProducts();
-    listenToEvent();
-  }, []);
-
-  const listenToEvent = async () => {
+  const listenToEvent = useCallback(async () => {
     console.log("add p event");
     SupplyChainService.getInstance()
       .getContract()
@@ -43,11 +39,16 @@ export const AllProducts = () => {
           toastSuccess("New Product successfully added");
         }
       );
-  };
+  }, []);
+
+  useEffect(() => {
+    getProducts();
+    listenToEvent();
+  }, [getProducts, listenToEvent]);
 
   useEffect(() => {
     !productListLoading && setProductList(products);
-  }, [productListLoading]);
+  }, [productListLoading, products]);
 
   useEffect(() => {
     setProductList(searchedProducts);
@@ -58,14 +59,7 @@ export const AllProducts = () => {
       <Header />
       <VStack w="100%" minH="85vh" alignItems="center" p="2">
         {productListLoading ? (
-          <HStack mt={20} justifyContent={"center"}>
-            <ThreeCircles
-              color="blue"
-              height={110}
-              width={110}
-              ariaLabel="three-circles-rotating"
-            />
-          </HStack>
+          <Loading />
         ) : !productListLoading && productList && productList.length === 0 ? (
           <Heading mt={20}>No Products Found</Heading>
         ) : (
@@ -73,13 +67,20 @@ export const AllProducts = () => {
             py={5}
             mt={[5, 20]}
             width={["100%", "96vw"]}
-            alignItems="center"
-            justifyContent={"flex-start"}
-            flexWrap={"wrap"}
+            alignItems="flex-start"
+            justifyContent="center"
+            flexWrap="wrap"
+            // spacing={"4"} // Add spacing between rows
+            px={[4, 8]} // Add equal horizontal padding for proper alignment
+            gap={6} // Space between items
           >
             {productList &&
               productList.map((item: Product) => (
-                <ProductCard key={item.barcodeId || Date.now()} item={item} />
+                <ProductCard
+                  key={item.barcodeId || Date.now()}
+                  item={item}
+                  loading={productListLoading}
+                />
               ))}
           </HStack>
         )}

@@ -1,7 +1,7 @@
 import { Avatar, Box, HStack, Image, Pressable } from "native-base";
 import { useState } from "react";
 
-import { BsCartFill, BsCartPlusFill, BsFillBagFill } from "react-icons/bs";
+import { BsFillBagFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../store/reducers";
 import { useSelector } from "react-redux";
@@ -37,19 +37,22 @@ export function Header() {
         <HStack space={3} alignItems="center">
           <Pressable onPress={() => navigate("/")}>
             <Image
-              size={{ base: "90", md: "130" }}
+              size={{ base: "50", md: "70", lg: "20", sm: "10" }}
               resizeMode={"contain"}
               source={{
-                uri: "https://www.pmlive.com/__data/assets/image/0006/1360914/Pfizer_new_2021.jpeg",
+                uri: "http://localhost:3000/logo192.png",
               }}
               alt="Logo"
             />
           </Pressable>
-          {isMenuVisible && <MobileNav />}
+         
+        </HStack>
+        <HStack>
+        {isMenuVisible && <MobileNav />}
           <Box
-            alignItems="center"
-            display={["none", "flex"]}
-            flexDirection={["row"]}>
+          alignItems="center"
+          display={["none", "flex"]}
+          flexDirection={["row"]}>
             <Links />
           </Box>
         </HStack>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Avatar,
   Button,
@@ -13,24 +14,26 @@ import { useApiCall } from "../../../hooks/hooks";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/reducers";
-import { Product, UserDetails } from "../../../repository/interfaces";
+import { Product } from "../../../repository/interfaces";
 import { epochToDate } from "../../../utils/epochToDate";
 import { getNumberOfDays } from "../../../utils/daysLeft";
 import { BsCheckCircle } from "react-icons/bs";
 import { useNavigate } from "react-router";
 
 export const SaleModal = ({
+  setLoading,
   showModal,
   setShowModal,
   productSelected,
 }: {
+  setLoading: (arg0: boolean) => void;
   showModal: boolean;
   setShowModal: (arg0: boolean) => void;
   productSelected: Product;
 }) => {
   const [selectedUser, setSelectedUser] = useState<string>();
-  const { sellMyProduct, getUserList } = useApiCall();
-  const { userDetails, addedUserList } = useSelector(
+  const { sellMyProduct, getUserList, getMyProducts, myProductListLoading } = useApiCall();
+  const { addedUserList } = useSelector(
     (state: RootState) => state.generalReducer
   );
   const [userid, setUserId] = useState<string>("");
@@ -42,10 +45,12 @@ export const SaleModal = ({
   }, []);
 
   function sell() {
+    console.log("setting to true", myProductListLoading)
+    setLoading(true);
     console.log(userid, productSelected.barcodeId);
     sellMyProduct(userid, productSelected.barcodeId);
-
     setShowModal(false);
+    setLoading(false);
   }
 
   const selectUser = (text: string) => {
@@ -173,14 +178,9 @@ export const SaleModal = ({
             <Button
               variant="ghost"
               colorScheme="blueGray"
-              // onPress={() => {
-              //   cleanState();
-              //   setError({
-              //     email: false,
-              //     name: false,
-              //   });
-              //   setShowModal(false);
-              // }}
+              onPress={() => {
+                setShowModal(false);
+              }}
             >
               Cancel
             </Button>

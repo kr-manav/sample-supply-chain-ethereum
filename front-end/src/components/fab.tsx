@@ -7,7 +7,7 @@ import { FaUserPlus } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { RootState } from "../store/reducers";
-import { Product, UserRole } from "../repository/interfaces";
+import { UserRole } from "../repository/interfaces";
 // import { SupplyChainService } from "../repository/supplyChain";
 
 export default function Fab() {

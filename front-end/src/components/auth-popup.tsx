@@ -1,4 +1,4 @@
-import { Box, Button, Text, VStack } from "native-base";
+import { Box, Text, VStack } from "native-base";
 import { useNavigate } from "react-router-dom";
 import { ThemeButton } from "./theme-button";
 import { useSelector, useDispatch } from "react-redux";

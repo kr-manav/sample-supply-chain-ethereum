@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Product, UserDetails } from "../repository/interfaces";
@@ -101,6 +102,7 @@ export const useApiCall = () => {
           partyAddress,
           productId
         );
+        await getMyProducts();
         if (sellerDetails) {
           toastSuccess("Product successfully sold");
         }
@@ -155,5 +157,6 @@ export const useApiCall = () => {
     productListLoading,
     myProductListLoading,
     productDetailsLoading,
+    setMyProductListLoading
   };
 };

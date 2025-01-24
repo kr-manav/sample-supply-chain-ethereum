@@ -1,10 +1,9 @@
 import { getCurrentEpoch } from "../utils/util";
 import { CONTRACT_ADDRESS } from "./config";
-import { Product, UserDetails } from "./interfaces";
+import { Product, UserDetails, UserRole } from "./interfaces";
 import { Contract, ethers } from "ethers";
 
 const ContractABI = require("./SupplyChain.json");
-const productList = require("./data-1.json");
 
 declare let window: any;
 
@@ -37,7 +36,7 @@ export class SupplyChainService {
       });
       await ethereum.request({
         method: "wallet_switchEthereumChain",
-        params: [{ chainId: `0x${Number(4).toString(16)}` }],
+        params: [{ chainId: `0x${Number(80002).toString(16)}` }],
       });
       this._accountAdress = accounts[0];
       this._supplyChainContract = this.getContract();
@@ -54,7 +53,7 @@ export class SupplyChainService {
 
   getContract() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
+    const signer = provider.getSigner()
     return new ethers.Contract(CONTRACT_ADDRESS, ContractABI["abi"], signer);
   }
   async getMyDetails(): Promise<UserDetails> {
@@ -126,10 +125,30 @@ export class SupplyChainService {
       product.manufacturerName = "Pfizer";
       product.manufacturer = this._accountAdress;
       console.log(product, "product");
+      
       const addProduct = await this._supplyChainContract.addProduct(
-        product,
-        secondsSinceEpoch
+        [
+          product.name,
+          product.manufacturerName,
+          product.manufacturer,
+          product.manDateEpoch,
+          product.expDateEpoch,
+          product.isInBatch,
+          product.isInBatch ? product.batchCount : 0,
+          product.barcodeId,
+          product.productImage,
+          product.productType,
+          product.scientificName,
+          product.usage,
+          product.composition,
+          product.sideEffects,
+        ],
+        BigInt(secondsSinceEpoch), 
+        {
+          gasPrice: '30000000000'
+        }
       );
+      await addProduct.wait();
       return addProduct;
     } catch (error) {
       console.log("error", error);
@@ -147,7 +166,7 @@ export class SupplyChainService {
         productId,
         secondsSinceEpoch
       );
-
+      await sell.wait()
       return sell;
     } catch (error) {
       console.log(error);
@@ -155,8 +174,17 @@ export class SupplyChainService {
     }
   }
   async addParty(party: UserDetails): Promise<boolean> {
+    console.log("🚀 ~ file: supplyChain.ts:177 ~ SupplyChainService ~ addParty ~ party:", party);
     try {
-      const addUser = await this._supplyChainContract.addParty(party);
+      const addUser = await this._supplyChainContract.addParty(
+        [
+          party.role ? party.role : UserRole.Supplier,
+          party.id_,
+          party.name,
+          party.email
+        ]
+      );
+      await addUser.wait()
       return addUser;
     } catch (error) {
       console.log(error);
