@@ -31,6 +31,13 @@ export const setMyProducts = (payload: Product[]) => {
   };
 };
 
+export const sellMyProductAction = (payload: string) => {
+  return {
+    type: ACTION.SELL_MY_PRODUCT,
+    payload,
+  };
+};
+
 export const setUserDetails = (payload: UserDetails) => {
   return {
     type: ACTION.SET_USER_DETAILS,
@@ -48,6 +55,13 @@ export const setNewProduct = (payload: Product) => {
 export const getUsersList = (payload: UserDetails[]) => {
   return {
     type: ACTION.GET_USERLIST,
+    payload,
+  };
+};
+
+export const addUserDetails = (payload: UserDetails) => {
+  return {
+    type: ACTION.SET_NEW_USER,
     payload,
   };
 };

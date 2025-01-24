@@ -31,8 +31,9 @@ export const SaleModal = ({
   setShowModal: (arg0: boolean) => void;
   productSelected: Product;
 }) => {
+
   const [selectedUser, setSelectedUser] = useState<string>();
-  const { sellMyProduct, getUserList, getMyProducts, myProductListLoading } = useApiCall();
+  const { sellMyProduct, getUserList } = useApiCall();
   const { addedUserList } = useSelector(
     (state: RootState) => state.generalReducer
   );
@@ -44,12 +45,10 @@ export const SaleModal = ({
     }
   }, []);
 
-  function sell() {
-    console.log("setting to true", myProductListLoading)
+  async function sell() {
     setLoading(true);
-    console.log(userid, productSelected.barcodeId);
-    sellMyProduct(userid, productSelected.barcodeId);
     setShowModal(false);
+    await sellMyProduct(userid, productSelected.barcodeId);
     setLoading(false);
   }
 

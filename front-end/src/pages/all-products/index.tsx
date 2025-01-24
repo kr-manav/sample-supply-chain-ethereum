@@ -12,7 +12,7 @@ import { toastSuccess } from "../../utils/toastMessages";
 import { Loading } from "../../components/loading";
 
 export const AllProducts = () => {
-  const { productListLoading, getProducts, myProductListLoading } =
+  const { productListLoading, getProducts } =
     useApiCall();
   const { products, isUserLoggedIn, searchedProducts } = useSelector(
     (state: RootState) => state.generalReducer
@@ -68,7 +68,7 @@ export const AllProducts = () => {
             mt={[5, 20]}
             width={["100%", "96vw"]}
             alignItems="flex-start"
-            justifyContent="center"
+            justifyContent="start"
             flexWrap="wrap"
             // spacing={"4"} // Add spacing between rows
             px={[4, 8]} // Add equal horizontal padding for proper alignment

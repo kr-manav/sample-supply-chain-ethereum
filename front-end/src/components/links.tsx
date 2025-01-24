@@ -5,9 +5,9 @@ export function Links() {
   return (
     <>
       <NavLink
-        className={(navData) => (navData.isActive ? "link-active" : "link")}
+        className={`${((navData: any) => (navData.isActive ? "link-active" : "link"))}`}
         to="/all-products">
-        <Text fontWeight={"semibold"} fontSize="lg">
+        <Text fontWeight={"semibold"} fontSize="lg" marginRight={"50px"}>
           Products
         </Text>
       </NavLink>
@@ -17,7 +17,7 @@ export function Links() {
         isExternal
         href="https://blog.geekyants.com/"
         isUnderlined={false}>
-        <Text fontWeight={"semibold"} fontSize="lg">
+        <Text fontWeight={"semibold"} fontSize="lg" marginRight={"50px"}>
           Blogs
         </Text>
       </Link>
@@ -25,7 +25,7 @@ export function Links() {
         isExternal
         href="https://geekyants.com/#footer"
         isUnderlined={false}>
-        <Text fontWeight={"semibold"} fontSize="lg">
+        <Text fontWeight={"semibold"} fontSize="lg" marginRight={"50px"}>
           Contact Us
         </Text>
       </Link>

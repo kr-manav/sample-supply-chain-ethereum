@@ -11,18 +11,16 @@ const initialState: StateType = {
   myProducts: [],
   userDetails: {} as UserDetails,
   addedUserList: [],
-  searchedProducts: [],
+  searchedProducts: []
 };
 
 export function generalReducer(
   state = initialState,
   action: AnyAction
 ): StateType {
-  console.log("🚀 ~ file: general-reducer.ts:91 ~ state:", state);
-
-  console.log("🚀 ~ file: general-reducer.ts:21 ~ action:", action);
   switch (action.type) {
     case ACTION.SET_LOGIN_STATUS: {
+      
       const { status } = action.payload;
       let userGet;
       if (action.payload) {
@@ -43,6 +41,12 @@ export function generalReducer(
         userDetails: user ?? null,
       };
     }
+
+    case ACTION.SET_NEW_USER:
+      return {
+        ...state,
+        addedUserList: [...state.addedUserList, action.payload],
+      };
 
     case ACTION.GET_ALL_PRODUCTS:
       return {
@@ -71,12 +75,20 @@ export function generalReducer(
         myProducts: action.payload,
       };
 
+    case ACTION.SELL_MY_PRODUCT:
+      return {
+        ...state,
+        myProducts: state.myProducts.filter((product) => {
+          return product.barcodeId !== action.payload;
+        }),
+      };
+
     case ACTION.GET_USERLIST:
       return {
         ...state,
         addedUserList: action.payload,
       };
-      
+
     case ACTION.SET_SEARCHED_PRODUCTS:
       return {
         ...state,

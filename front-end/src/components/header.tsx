@@ -12,6 +12,8 @@ import { Links } from "./links";
 import { MobileNav } from "./mobile-nav";
 import { AiOutlineCloseCircle, AiOutlineMenu } from "react-icons/ai";
 import { UserRole } from "../repository/interfaces";
+import { ThemeButton } from "./theme-button";
+import { useApiCall } from "../hooks/hooks";
 
 export function Header() {
   const [showBox, setShowBox] = useState<boolean>(false);
@@ -20,6 +22,7 @@ export function Header() {
   );
   const [isMenuVisible, setMenuVisible] = useState(false);
   const navigate = useNavigate();
+  const { getUserDetails } = useApiCall();
 
   return (
     <>
@@ -33,7 +36,8 @@ export function Header() {
         w="100%"
         justifyContent={"space-between"}
         alignItems={"center"}
-        px={[3, 20]}>
+        px={[3, 20]}
+      >
         <HStack space={3} alignItems="center">
           <Pressable onPress={() => navigate("/")}>
             <Image
@@ -45,14 +49,14 @@ export function Header() {
               alt="Logo"
             />
           </Pressable>
-         
         </HStack>
         <HStack>
-        {isMenuVisible && <MobileNav />}
+          {isMenuVisible && <MobileNav />}
           <Box
-          alignItems="center"
-          display={["none", "flex"]}
-          flexDirection={["row"]}>
+            alignItems="center"
+            display={["none", "flex"]}
+            flexDirection={["row"]}
+          >
             <Links />
           </Box>
         </HStack>
@@ -63,21 +67,34 @@ export function Header() {
               <Box
                 alignItems="center"
                 display={["none", "flex"]}
-                flexDirection={["row"]}>
+                flexDirection={["row"]}
+              >
                 <CustomLink to="/my-products" IconRef={BsFillBagFill} />
               </Box>
             )}
-          <Pressable
-            display={["none", "block"]}
-            onPress={() => setShowBox((showBox) => !showBox)}>
-            <Avatar
-              source={{
-                uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-              }}></Avatar>
-          </Pressable>
+          {userDetails.role === undefined ? (
+            <ThemeButton
+              handleOnPress={() => {
+                getUserDetails();
+              }}
+              text="Login"
+            />
+          ) : (
+            <Pressable
+              display={["none", "block"]}
+              onPress={() => setShowBox((showBox) => !showBox)}
+            >
+              <Avatar
+                source={{
+                  uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                }}
+              ></Avatar>
+            </Pressable>
+          )}
           <Pressable
             display={["block", "none"]}
-            onPress={() => setMenuVisible((curr) => !curr)}>
+            onPress={() => setMenuVisible((curr) => !curr)}
+          >
             {isMenuVisible ? (
               <AiOutlineCloseCircle size="30" />
             ) : (

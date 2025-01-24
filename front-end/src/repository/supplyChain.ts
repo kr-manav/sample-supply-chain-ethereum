@@ -174,7 +174,6 @@ export class SupplyChainService {
     }
   }
   async addParty(party: UserDetails): Promise<boolean> {
-    console.log("🚀 ~ file: supplyChain.ts:177 ~ SupplyChainService ~ addParty ~ party:", party);
     try {
       const addUser = await this._supplyChainContract.addParty(
         [

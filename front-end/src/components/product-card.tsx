@@ -8,7 +8,6 @@ import { epochToDate } from "../utils/epochToDate";
 import { Barcode } from "./barcode";
 
 import { ThemeButton } from "./theme-button";
-import { Loading } from "./loading";
 import { useApiCall } from "../hooks/hooks";
 
 export const ProductCard = ({
@@ -27,9 +26,7 @@ export const ProductCard = ({
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  return loading ? (
-    <Loading />
-  ) : (
+  return (
     <Pressable
       m="4"
       mx={["auto", 4]}
@@ -60,7 +57,7 @@ export const ProductCard = ({
               uri: "https://api.time.com/wp-content/uploads/2020/11/pfizer-vaccine-1.jpg?w,1600,quality,70",
             }}
             alt={item.scientificName}
-            size={["md", "xl"]}
+            size={"100%"}
           />
         </VStack>
 

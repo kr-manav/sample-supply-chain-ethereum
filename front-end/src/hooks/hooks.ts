@@ -9,6 +9,8 @@ import {
   setNewProduct,
   getUsersList,
   setMyProducts,
+  sellMyProductAction,
+  addUserDetails,
 } from "../store/actions";
 import { toastError, toastSuccess } from "../utils/toastMessages";
 
@@ -103,6 +105,7 @@ export const useApiCall = () => {
           productId
         );
         await getMyProducts();
+        dispatch(sellMyProductAction(productId));
         if (sellerDetails) {
           toastSuccess("Product successfully sold");
         }
@@ -110,7 +113,7 @@ export const useApiCall = () => {
         toastError("Something went wrong");
       }
     },
-    []
+    [dispatch]
   );
 
   const addMyProduct = useCallback(async (product: Product) => {
@@ -130,6 +133,7 @@ export const useApiCall = () => {
     try {
       setLoading(true);
       const userAdded = await apiInstance.addParty(user);
+      dispatch(addUserDetails(user));
       console.log(userAdded);
       toastSuccess("user added successfully");
     } catch (error) {
@@ -157,6 +161,6 @@ export const useApiCall = () => {
     productListLoading,
     myProductListLoading,
     productDetailsLoading,
-    setMyProductListLoading
+    setMyProductListLoading,
   };
 };

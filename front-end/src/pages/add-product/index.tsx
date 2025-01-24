@@ -19,7 +19,7 @@ import { Product } from "../../repository/interfaces";
 import { toastError } from "../../utils/toastMessages";
 import { getCustomDateEpoch } from "../../utils/util";
 import { FormDate, FormInput, List } from "./components";
-import { Loading } from "../../components/loading";
+import LoadingOverlay from "../../components/loadingOverlay";
 export type InputType = { id: string; value: string };
 
 export function AddProductPage() {
@@ -160,6 +160,7 @@ export function AddProductPage() {
           borderRadius={"md"}
         >
           <VStack w={["90%", "60%"]} py="12">
+            {loading && <LoadingOverlay />}
             <Heading size="md" my="4">
               Main Information
             </Heading>
@@ -254,7 +255,10 @@ export function AddProductPage() {
               value={productDetails.productImage}
               type="text"
               setFunction={(text: string) =>
-                setProductDetails((curr) => ({ ...curr, productImage: text }))
+                setProductDetails((curr) => ({
+                  ...curr,
+                  productImage: text,
+                }))
               }
               placeholder="Product Image"
               errorMessage="Incorrect Value"
@@ -378,20 +382,16 @@ export function AddProductPage() {
               />
             </FormControl>
 
-            {loading ? (
-              <Loading />
-            ) : (
-              <Button
-                onPress={() => {
-                  handleSubmit();
-                }}
-                mt="4"
-                bg="violet.700"
-                _hover={{ bg: "violet.900" }}
-              >
-                Submit
-              </Button>
-            )}
+            <Button
+              onPress={() => {
+                handleSubmit();
+              }}
+              mt="4"
+              bg="violet.700"
+              _hover={{ bg: "violet.900" }}
+            >
+              Submit
+            </Button>
           </VStack>
         </VStack>
       </VStack>
